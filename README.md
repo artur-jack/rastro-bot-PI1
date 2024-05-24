@@ -1,2 +1,2 @@
-# rastro-bot-PI1
-Repositória referente ao projeto de PI1 do grupo 1
+# Rastro-bot-PI1
+Repositório referente ao projeto de PI1 do grupo 1
