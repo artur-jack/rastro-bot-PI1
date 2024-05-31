@@ -17,8 +17,7 @@ create table Corrida(
 /* EXEMPLO DE INSERCAO
 insert into Corrida(Inicio,Fim,Estado,TempoTotal,TrajetoTotal,ConsumoMedio,AceleracaoMedia,VelocidadeMedia) 
 values('2024-05-30 09:30:00','2024-05-30 10:15:00','Finalizado','01:00:00',50.5,7.8,10.2,60.3);*/
-```
-```
+
 create table DadosCorrida(
     id integer primary key autoincrement,
     TempoColeta TIME,
