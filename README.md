@@ -16,3 +16,41 @@ Para o ngrok conhecer as urls a partir da porta 8000, foi necessário o seguinte
   --forwards "http://localhost:8000/api/esp32/data/ -> /api/esp32/data/" \
   --forwards "http://localhost:8000/api/esp32/data/delete/ -> /api/esp32/data/delete/"
 ```
+# Rodar API
+
+No momento para rodar a api, além de ter o python e o MySQL instalado, deve-se ter instalado também o django e o rest framework.
+
+## Instalações caso não tenha
+
+- pip install django
+- pip install mysqlclient
+- pip install djangorestframework
+
+se o seu for python3 e não estivar indo, tente usar pip3.
+
+## Criar Database
+
+Deve ser criado uma base de dados chamada rastrobotdb no MySQL.
+
+- CREATE DATABASE rastrobotdb;
+
+## Migration 
+
+Após a criação do database mude no arquivo settings.py a senha 'root' para sua senha do MySQL onde tiver no arquivo:
+
+DATABASE = {
+...
+'PASSWORD': 'root', 
+...
+} 
+
+Após isso, rode o seguintes comando. Troque onde tiver python por python3 caso o seu for python3.
+
+- python manage.py makemigrations
+python manage.py migrate
+
+# Rodar API
+
+Por último uso o seguinte comando para rodar a api:
+
+- python manage.py runserver
