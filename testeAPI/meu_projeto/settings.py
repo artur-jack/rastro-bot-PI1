@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rastrinho',  # Nome do banco de dados
         'USER': 'root',
-        'PASSWORD': 'ajlf2468',
+        'PASSWORD': 'root',
         'HOST': 'localhost',  # Ou o endereço do seu servidor MySQL
         'PORT': '3306',  # Porta do MySQL, padrão é 3306
     }
