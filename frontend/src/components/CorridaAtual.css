@@ -1,0 +1,33 @@
+.corrida-container {
+    text-align: center;
+    margin: auto;
+}
+
+.table-container {
+    margin: 20px;
+}
+
+table {
+    margin: auto;
+    width: 40%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; 
+    overflow: hidden;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    background-color: #ffffff; 
+}
+
+tr:first-child th,
+tr:first-child td {
+    background-color: #3a1d39; 
+    color: white; 
+}
+
+tr:not(:first-child):hover td {
+    background-color: #f8f8f8;
+}

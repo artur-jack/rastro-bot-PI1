@@ -1,0 +1,35 @@
+.corridas-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .corridas-button-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    align-items: center;
+    width: 300px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .corridas-button-container .btn {
+    margin: 10px 0;
+    padding: 10px 40px;
+    background-color: #3a1d39;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .corridas-button-container .btn:hover {
+    background-color: #6b3969;
+  }
+  
