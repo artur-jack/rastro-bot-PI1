@@ -4,7 +4,7 @@ import './CorridaAtual.css';
 const CorridaAnterior = () => {
   return (
     <div className='corrida-container'>
-      <h2>Corrida Atual</h2>
+      <h2>Corrida Anterior</h2>
       <div className='table-container'> 
         <table>
           <tbody>
