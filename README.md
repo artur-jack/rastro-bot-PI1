@@ -54,3 +54,10 @@ python manage.py migrate
 Por último uso o seguinte comando para rodar a api:
 
 - python manage.py runserver
+
+# Rodar Frontend
+
+Antes de rodar o frontend, utlize o "npm install" para garantir que seu projeto tenha todas as dependências instaladas;
+O comando para rodar o frontend é:
+
+- npm start
