@@ -36,3 +36,7 @@ porta_serial = serial.Serial('PORTA', 115200)
 ```bash
 $ flask run
 ```
+
+# Possíveis problemas
+
+Caso depois de pouco tempo a api dê erro, tente trocar o código da ESP para o da esp32_alternativo.c
