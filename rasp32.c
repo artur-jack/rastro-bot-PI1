@@ -3,19 +3,17 @@
 #include <ArduinoJson.h>
 #include <time.h>
 
-// Configurações do Wi-Fi
-const char* ssid = "";       // Nome da sua rede Wi-Fi
-const char* password = "";  // Senha da sua rede Wi-Fi
+const char* ssid = "";             // Nome da sua rede WiFi
+const char* password = "";        // Senha da sua rede WiFi
+const char* serverUrl = "AQUI/api/data";  // URL da sua API Flask
 
-const char* serverUrl = "AQUI/api/data"; // COLE AQUI O SEU NGROK
-const unsigned long intervaloArmazenamento = 250;  // Intervalo de armazenamento em milissegundos (0,5 segundos)
-const unsigned long intervaloEnvio = 1000;  // Intervalo de envio em milissegundos (4 segundos)
-const int maxRetries = 3; // Máximo de tentativas de reconexão HTTP
+const unsigned long intervaloArmazenamento = 500; // Intervalo de armazenamento em milissegundos (0,5 segundos)
+const unsigned long intervaloEnvio = 2000;       // Intervalo de envio em milissegundos (4 segundos)
+const int maxRetries = 3;                        // Máximo de tentativas de reconexão HTTP
 
 unsigned long lastStorageTime = 0;  // Último tempo de armazenamento
 unsigned long lastSendTime = 0;     // Último tempo de envio
 
-// Estrutura para armazenar os dados
 struct Dados {
   int sensorEsquerdo;
   int sensorDireito;
@@ -42,11 +40,11 @@ void loop() {
   if (currentTime - lastStorageTime >= intervaloArmazenamento) {
     lastStorageTime = currentTime;
 
-    // Lê os dados dos sensores (simulados)
-    int sensorEsquerdo = analogRead(34); // Exemplo de leitura do sensor esquerdo
-    int sensorDireito = analogRead(35);  // Exemplo de leitura do sensor direito
-    float velocidade = 10.5;             // Exemplo de leitura da velocidade
-    float distancia = 20.0;              // Exemplo de leitura da distância
+    // Simulação de leitura de dados dos sensores
+    int sensorEsquerdo = random(0, 100);  // Exemplo de leitura do sensor esquerdo
+    int sensorDireito = random(0, 100);   // Exemplo de leitura do sensor direito
+    float velocidade = random(0, 50) / 10.0;  // Exemplo de leitura da velocidade
+    float distancia = random(0, 100);         // Exemplo de leitura da distância
 
     // Armazena os dados no array
     dadosArmazenados[dadosIndex].sensorEsquerdo = sensorEsquerdo;
@@ -66,7 +64,7 @@ void loop() {
   if (currentTime - lastSendTime >= intervaloEnvio) {
     lastSendTime = currentTime;
 
-    // Cria um array para armazenar os dados a enviar
+    // Cria um objeto JSON para armazenar os dados
     StaticJsonDocument<1024> doc;
     JsonArray array = doc.to<JsonArray>();
 
@@ -84,7 +82,7 @@ void loop() {
     String payload;
     serializeJson(doc, payload);
 
-    // Envia os dados via HTTP POST para o servidor Node.js
+    // Envia os dados via HTTP POST para o servidor Flask
     sendPostRequest(payload);
   }
 
