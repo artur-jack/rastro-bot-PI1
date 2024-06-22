@@ -8,8 +8,8 @@ const char* ssid = "";       // Nome da sua rede Wi-Fi
 const char* password = "";  // Senha da sua rede Wi-Fi
 
 const char* serverUrl = "AQUI/api/data"; // COLE AQUI O SEU NGROK
-const unsigned long intervaloArmazenamento = 500;  // Intervalo de armazenamento em milissegundos (0,5 segundos)
-const unsigned long intervaloEnvio = 2000;  // Intervalo de envio em milissegundos (4 segundos)
+const unsigned long intervaloArmazenamento = 250;  // Intervalo de armazenamento em milissegundos (0,5 segundos)
+const unsigned long intervaloEnvio = 1000;  // Intervalo de envio em milissegundos (4 segundos)
 const int maxRetries = 3; // Máximo de tentativas de reconexão HTTP
 
 unsigned long lastStorageTime = 0;  // Último tempo de armazenamento
