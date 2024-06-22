@@ -1,21 +1,35 @@
-# API_Flask
-Esta API, desenvolvida em Python utilizando o Flask, recebe dados via MQTT da ESP32 e os armazena em um banco de dados MySQL local. Foi projetada com o propósito de ser utilizada em um carrinho seguidor de linha para coletar dados durante uma corrida.
+# API_Flask_ESP32_Bluetooth
+
+Esta API, desenvolvida em Python utilizando o Flask, recebe dados via Bluetooth da ESP32-WROOM-32D e os armazena em um banco de dados MySQL local. Foi projetada com o propósito de ser utilizada em um carrinho seguidor de linha para coletar dados durante uma corrida.
 
 # Requisitos
 
 ```bash
 $ pip install Flask Flask-SQLAlchemy 
 $ pip install mysql-connector-python
-$ pip install Flask-MQTT
 $ pip install requests
-$ sudo apt-get install mosquitto-clients
-$ pip install mysqlclient
+$ pip install pymysql
+$ pip install pyserial
+
 ```
-# Testar MQTT
-```bash
-mosquitto_pub -h broker.emqx.io -t "/flaskk/mqtt" -m '{"sensor_esquerdo": 1, "sensor_direito": 1, "velocidade": 10, "distancia": 20, "timestamp": "2024-06-15 11:30:00"}'
+
+# Configurando
+Abra o seu Mysql local e crie um banco de dados chamado rastrobotdb2.
 ```
-Obs: A api deve estar rodando para que isso funcione.
+CREATE DATABASE rastrobotdb2;
+```
+
+Na linha 19 do arquivo app.py insira o seu login e senha do Mysql.
+
+```
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://LOGIN:SENHA@localhost/rastrobotdb2'
+```
+
+Na linha 39 do arquivo app.py insira a porta de saída de dados do bluetooth da ESP32.
+
+```
+porta_serial = serial.Serial('PORTA', 115200)
+```
 
 # Rodar a API
 ```bash
