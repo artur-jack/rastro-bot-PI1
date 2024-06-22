@@ -10,6 +10,7 @@ $ pip install mysql-connector-python
 $ pip install requests
 $ pip install pymysql
 $ pip install pyserial
+$ pip install cryptography
 
 ```
 
