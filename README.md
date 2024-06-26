@@ -15,9 +15,9 @@ $ pip install cryptography
 ```
 
 # Configurando
-Abra o seu Mysql local e crie um banco de dados chamado rastrobotdb2.
+Abra o seu Mysql local e crie um banco de dados chamado teste.
 ```
-CREATE DATABASE rastrobotdb2;
+CREATE DATABASE teste;
 ```
 
 Na linha 19 do arquivo app.py insira o seu login e senha do Mysql.
