@@ -10,23 +10,24 @@ pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://leandro:123456789@localhost/rastrobotdb2'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://leandro:123456789@localhost/teste'
 db = SQLAlchemy(app)
 
 # Definir a classe do modelo do banco de dados
-class esp32_data(db.Model):
+class DADOS_CORRIDA(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sensor_esquerdo = db.Column(db.String(100))
-    sensor_direito = db.Column(db.String(100))
-    velocidade = db.Column(db.Float, default=0.0)
-    distancia = db.Column(db.Float, default=0.0)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
+    distancia = db.Column(db.Float, default=0.0)
+    velocidade = db.Column(db.Float, default=0.0)
+    aceleracao = db.Column(db.Float, default=0.0)
+    consumo = db.Column(db.Float, default=0.0)
+   
+    tempoColeta = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def to_json(self):
-        return {"id": self.id, "sensor_esquerdo": self.sensor_esquerdo, 
-                "sensor_direito": self.sensor_direito, "velocidade": self.velocidade,
-                "distancia": self.distancia, "timestamp": self.timestamp.strftime('%Y-%m-%d %H:%M:%S')}
+        return {"id": self.id, "distancia": self.distancia, "velocidade": self.velocidade,
+                "aceleracao": self.aceleracao, "consumo": self.consumo,
+                 "tempoColeta": self.tempoColeta.strftime('%Y-%m-%d %H:%M:%S')}
 
 # Criar tabelas se ainda não existirem
 with app.app_context():
@@ -51,12 +52,13 @@ def verificar_e_inserir_dados_ble():
 
                 # Inserir os dados no banco de dados
                 try:
-                    timestamp = datetime.strptime(dados_ble_json["current_time"], '%Y-%m-%d %H:%M:%S')
-                    dados = esp32_data(sensor_esquerdo=dados_ble_json["sensor_esquerdo"],
-                                       sensor_direito=dados_ble_json["sensor_direito"],
+                    tempoColeta = datetime.strptime(dados_ble_json["tempoColeta"], '%Y-%m-%d %H:%M:%S')
+                    dados = DADOS_CORRIDA(
+                                       distancia=dados_ble_json["distancia"], 
                                        velocidade=dados_ble_json["velocidade"],
-                                       distancia=dados_ble_json["distancia"],
-                                       timestamp=timestamp)
+                                       aceleracao=dados_ble_json["aceleracao"],
+                                       consumo=dados_ble_json["consumo"],
+                                       tempoColeta=tempoColeta)
                     db.session.add(dados)
                     db.session.commit()
                     print("Dados inseridos no banco de dados com sucesso!")
@@ -76,10 +78,11 @@ def cria_dados():
     body = request.get_json()
 
     try:
-        timestamp = datetime.strptime(body["timestamp"], '%Y-%m-%d %H:%M:%S')
+        tempoColeta = datetime.strptime(body["tempoColeta"], '%Y-%m-%d %H:%M:%S')
 
-        dados = esp32_data(sensor_esquerdo=body["sensor_esquerdo"], sensor_direito=body["sensor_direito"],
-                           velocidade=body["velocidade"], distancia=body["distancia"], timestamp=timestamp)
+        dados = DADOS_CORRIDA(distancia=body["distancia"],
+                           velocidade=body["velocidade"], aceleracao=body["aceleracao"], 
+                           consumo=body["consumo"], tempoColeta=tempoColeta)
         db.session.add(dados)
         db.session.commit()
         return gera_response(201, "dados", dados.to_json(), "Criado com sucesso")
@@ -107,5 +110,3 @@ if __name__ == '__main__':
     
     # Iniciar a aplicação Flask
     app.run()
-
-#conectar mysql shell: \connect nome_de_usuario@host:3306
