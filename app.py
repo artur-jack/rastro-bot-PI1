@@ -29,6 +29,17 @@ class DADOS_CORRIDA(db.Model):
                 "aceleracao": self.aceleracao, "consumo": self.consumo,
                  "tempoColeta": self.tempoColeta.strftime('%Y-%m-%d %H:%M:%S')}
 
+# Definir a classe do modelo do banco de dados
+class CORRIDA(db.Model):
+    idCorrida = db.Column(db.Integer, primary_key=True)
+    inicio = db.Column(db.Time, default="00:00:00")
+    fim = db.Column(db.Time, default="00:00:00")
+    tempoTotal = db.Column(db.Time, default="00:00:00")
+    trajetoTotal = db.Column(db.Float, default=0.0)
+    consumoMedia = db.Column(db.Float, default=0.0)
+    aceleracaoMedia = db.Column(db.Float, default=0.0)
+    velocidadeMedia = db.Column(db.Float, default=0.0)
+
 # Criar tabelas se ainda não existirem
 with app.app_context():
     db.create_all()
