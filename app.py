@@ -6,7 +6,6 @@ import pymysql
 import json
 import threading
 from sqlalchemy import func
-import random
 
 pymysql.install_as_MySQLdb()
 
@@ -24,7 +23,7 @@ class DADOS_CORRIDA(db.Model):
     aceleracao = db.Column(db.Float, default=0.0)
     consumo = db.Column(db.Float, default=0.0)
     tempoColeta = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    meuovo = db.Column(db.Integer, default=1)  # Nova coluna
+    idcorri = db.Column(db.Integer, default=1)  # Nova coluna
 
     def to_json(self):
         return {
@@ -34,7 +33,7 @@ class DADOS_CORRIDA(db.Model):
             "aceleracao": self.aceleracao,
             "consumo": self.consumo,
             "tempoColeta": self.tempoColeta.strftime('%Y-%m-%d %H:%M:%S'),
-            "meuovo": self.meuovo  
+            "idcorri": self.idcorri  
         }
 
 # Definir a classe do modelo do banco de dados
@@ -56,11 +55,11 @@ with app.app_context():
 collecting_data = True  # Iniciar como True
 dados_pendentes = []  # Lista para armazenar os dados recebidos durante o "STOP"
 inseriu_corrida = False  # Flag para controlar se já inseriu a corrida após parar
-meuovo_incremento = 1  # Variável para controlar o incremento de meuovo
+idcorri_incremento = 1  # Variável para controlar o incremento de idcorri
 
 # Função para verificar os dados recebidos pela porta serial Bluetooth e adicionar ao banco de dados
 def verificar_e_inserir_dados_ble():
-    global collecting_data, dados_pendentes, inseriu_corrida, meuovo_incremento
+    global collecting_data, dados_pendentes, inseriu_corrida, idcorri_incremento
     collecting_data_prev = False  # Variável para armazenar o estado anterior de coleta
 
     with app.app_context():  # Entrar no contexto da aplicação Flask
@@ -99,7 +98,7 @@ def verificar_e_inserir_dados_ble():
                                 aceleracao=dados_ble_json["aceleracao"],
                                 consumo=dados_ble_json["consumo"],
                                 tempoColeta=tempoColeta,
-                                meuovo=meuovo_incremento)  # Incrementar meuovo
+                                idcorri=idcorri_incremento)  # Incrementar idcorri
                             
                             db.session.add(dados)
                             db.session.commit()
@@ -155,40 +154,40 @@ def inserir_corrida():
 
 def calcular_media_velocidade():
     with app.app_context():
-        media = db.session.query(func.avg(DADOS_CORRIDA.velocidade)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        media = db.session.query(func.avg(DADOS_CORRIDA.velocidade)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         return media
 
 def calcular_media_aceleracao():
     with app.app_context():
-        media = db.session.query(func.avg(DADOS_CORRIDA.aceleracao)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        media = db.session.query(func.avg(DADOS_CORRIDA.aceleracao)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         return media
 
 def calcular_media_consumo():
     with app.app_context():
-        media = db.session.query(func.avg(DADOS_CORRIDA.consumo)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        media = db.session.query(func.avg(DADOS_CORRIDA.consumo)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         return media
     
 def calcular_media_consumo():
     with app.app_context():
-        media = db.session.query(func.avg(DADOS_CORRIDA.consumo)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        media = db.session.query(func.avg(DADOS_CORRIDA.consumo)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         return media
 
 def obter_tempo_inicio_corrida():
     with app.app_context():
-        tempo_inicio_corrida = db.session.query(func.min(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        tempo_inicio_corrida = db.session.query(func.min(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         
         return tempo_inicio_corrida
     
 def obter_tempo_fim_corrida():
     with app.app_context():
-        tempo_fim_corrida = db.session.query(func.max(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        tempo_fim_corrida = db.session.query(func.max(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         
         return tempo_fim_corrida
 
 def calcular_tempo():
     with app.app_context():
-        tempo_inicio = db.session.query(func.min(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
-        tempo_fim = db.session.query(func.max(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.meuovo == meuovo_incremento).scalar()
+        tempo_inicio = db.session.query(func.min(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
+        tempo_fim = db.session.query(func.max(DADOS_CORRIDA.tempoColeta)).filter(DADOS_CORRIDA.idcorri == idcorri_incremento).scalar()
         
         if tempo_inicio and tempo_fim:
             duracao = tempo_fim - tempo_inicio
@@ -200,7 +199,7 @@ def calcular_tempo():
 def calcular_trajeto():
     with app.app_context():
         trajeto = db.session.query(DADOS_CORRIDA.distancia)\
-                            .filter(DADOS_CORRIDA.meuovo == meuovo_incremento)\
+                            .filter(DADOS_CORRIDA.idcorri == idcorri_incremento)\
                             .order_by(DADOS_CORRIDA.tempoColeta.desc())\
                             .first()
         
@@ -223,22 +222,22 @@ def index():
     '''
     return html
 
-# Variável para controlar o incremento de meuovo
-meuovo_incremento = 1  
+# Variável para controlar o incremento de idcorri
+idcorri_incremento = 1  
 
-# Recuperar o último valor de meuovo do banco de dados ao iniciar a aplicação
+# Recuperar o último valor de idcorri do banco de dados ao iniciar a aplicação
 with app.app_context():
-    ultimo_meuovo = db.session.query(func.max(DADOS_CORRIDA.meuovo)).scalar()
-    if ultimo_meuovo is not None:
-        meuovo_incremento = ultimo_meuovo + 1
+    ultimo_idcorri = db.session.query(func.max(DADOS_CORRIDA.idcorri)).scalar()
+    if ultimo_idcorri is not None:
+        idcorri_incremento = ultimo_idcorri + 1
 
 # Rota para iniciar a coleta de dados
 @app.route('/start', methods=['POST'])
 def start_collecting():
-    global collecting_data, inseriu_corrida, meuovo_incremento
+    global collecting_data, inseriu_corrida, idcorri_incremento
 
-    # Incrementar o valor de meuovo para os novos dados
-    meuovo_incremento += 1  
+    # Incrementar o valor de idcorri para os novos dados
+    idcorri_incremento += 1  
 
     collecting_data = True
     inseriu_corrida = False  # Reiniciar a flag ao iniciar a coleta
