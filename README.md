@@ -37,6 +37,11 @@ porta_serial = serial.Serial('PORTA', 115200)
 $ flask run
 ```
 
+Quando a API estiver em execução, abra este link no navegador: http://127.0.0.1:5000/
+
+O botão START permite que a API receba dados, enquanto o botão STOP faz com que a API pare de receber dados. Eles simulam o início e o fim de uma corrida realizada pelo carrinho.
+
+
 # Possíveis problemas
 
 Caso depois de pouco tempo a api dê erro, tente trocar o código da ESP para o da esp32_alternativo.c
