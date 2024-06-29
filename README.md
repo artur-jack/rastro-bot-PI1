@@ -1,5 +1,10 @@
 # Rodar API
 
+Os arquivos usados são:
+
+- ESP_pontoAcesso_Encoder.c
+- api_pontoAcesso_Encoder.py
+  
 ## Descrição
 
 Esta API foi desenvolvida para monitorar as métricas de um carrinho autônomo. Ela permite iniciar e finalizar corridas, bem como armazenar dados de velocidade, distância, aceleração e consumo em um banco de dados MySQL.
@@ -28,7 +33,7 @@ Esta API foi desenvolvida para monitorar as métricas de um carrinho autônomo. 
     'database': 'carrodoovo'
     }
 
-Crie uma base de dados no banco mysql chamada carrodoovo.
+3.1 Crie uma base de dados no banco mysql chamada carrodoovo.
   ```bash
   CREATE DATABASE carrodoovo;
 
