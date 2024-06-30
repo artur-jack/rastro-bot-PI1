@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_json import FlaskJSON, json_response
 import pymysql
-from datetime import datetime, timedelta
+from datetime import datetime
 import random
 
 app = Flask(__name__)
@@ -65,19 +65,6 @@ def setup_database():
     connection.close()
     print('Conectado ao banco de dados MySQL')
 
-# Função para calcular e formatar tempo total
-def calcular_tempo_total(inicio, fim):
-    tdelta = fim - inicio
-    total_seconds = int(tdelta.total_seconds())
-    
-    # Convertendo para formato hh:mm:ss
-    hours = total_seconds // 3600
-    minutes = (total_seconds % 3600) // 60
-    seconds = total_seconds % 60
-    
-    tempo_total = f"{hours:02}:{minutes:02}:{seconds:02}"
-    return tempo_total
-
 # Função para calcular as métricas e inserir dados no banco de dados
 def insert_data(data):
     global total_distance_dir, total_distance_esq
@@ -96,8 +83,8 @@ def insert_data(data):
         # Calcula as métricas
         speed_dir = (circumference / pulse_per_revolution) / (data['timeDIR'] / 1000.0)  # m/s
         speed_esq = (circumference / pulse_per_revolution) / (data['timeESQ'] / 1000.0)  # m/s
-        distance_dir = data['pulseCountDIR'] * (circumference / pulse_per_revolution)  # m
-        distance_esq = data['pulseCountESQ'] * (circumference / pulse_per_revolution)  # m
+        distance_dir = speed_dir * (data['timeDIR'] / 1000.0)  # m
+        distance_esq = speed_esq * (data['timeESQ'] / 1000.0)  # m
 
         # Atualiza a distância total percorrida pelo carrinho
         total_distance_dir += distance_dir
@@ -168,7 +155,8 @@ def end_corrida():
         return json_response(status=400, message='Nenhuma corrida em andamento.')
 
     fim_corrida = datetime.now()
-    tempo_total = calcular_tempo_total(inicio_corrida, fim_corrida)
+    tempo_total = (fim_corrida - inicio_corrida).total_seconds()
+    tempo_total_str = str(datetime.utcfromtimestamp(tempo_total).strftime('%H:%M:%S'))  # Tempo total em horas:minutos:segundos
     trajeto_total = (total_distance_dir + total_distance_esq) / 2  # Distância total média
 
     # Calcula médias das métricas
@@ -183,7 +171,7 @@ def end_corrida():
             UPDATE corridas
             SET fim=%s, tempo_total=%s, trajeto_total=%s, consumo_medio=%s, aceleracao_media=%s, velocidade_media=%s
             WHERE id=%s
-        ''', (fim_corrida, tempo_total, trajeto_total, consumo_medio, aceleracao_media, velocidade_media, corrida_id))
+        ''', (fim_corrida, tempo_total_str, trajeto_total, consumo_medio, aceleracao_media, velocidade_media, corrida_id))
         connection.commit()
         print(f'Corrida finalizada com ID: {corrida_id}')
     except Exception as e:
