@@ -23,7 +23,7 @@ Esta API foi desenvolvida para monitorar as métricas de um carrinho autônomo. 
 2. Instale as dependencias
    ```bash
     pip install Flask Flask-JSON PyMySQL
-
+  
 3. Configure o banco no código da api
    ```bash
     db_config = {
@@ -33,13 +33,13 @@ Esta API foi desenvolvida para monitorar as métricas de um carrinho autônomo. 
     'database': 'carrodoovo'
     }
 
-3.1 Crie uma base de dados no banco mysql chamada carrodoovo.
+3.1 Crie uma base de dados no banco mysql chamada carrodoovo
   ```bash
   CREATE DATABASE carrodoovo;
-
+  ```
 4. Rode a api. Pode ser pelo botão do vscode ou:
    ```bash
-  python app.py
+    python app.py
 
 5. Quando a ESP32 já estiver ligada com o código rodando conecte no WIFI da ESP
 
@@ -51,8 +51,8 @@ SENHA: 12345678
     curl -X POST http://192.168.4.2:3000/api/start_corrida
 
 7. Use a requisição abaixo no cmd quando quiser encerrar a corrida:
-  ```bash
-  curl -X POST http://192.168.4.2:3000/api/end_corrida
+    ```bash
+    curl -X POST http://192.168.4.2:3000/api/end_corrida
 
 # Configurar a ESP32
 
