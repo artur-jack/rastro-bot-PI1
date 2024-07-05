@@ -1,0 +1,42 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #3a1d39;
+    color: white;
+  }
+  
+  .logo-container {
+    margin-right: 20px;
+  }
+  
+  .title-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .title {
+    font-size: 24px;
+  }
+  
+  .back-button-container {
+    margin-left: auto;
+  }
+  
+  .back-button {
+    background-color: transparent; 
+    border: none; 
+    cursor: pointer; 
+    padding: 8px 12px; 
+  }
+  
+  .back-button-image {
+    width: 20px;
+    height: 20px;
+  }
+  
