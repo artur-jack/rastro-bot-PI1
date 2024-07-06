@@ -2,6 +2,7 @@ import React from 'react';
 import './CorridaAtual.css';
 import FirstCorrida from './FirstCorrida';
 import { useParams } from 'react-router-dom';
+import MapaCorrida from './MapaCorrida';
 
 const CorridaAnterior = () => {
   const { corridaId } = useParams();
@@ -39,6 +40,7 @@ const CorridaAnterior = () => {
           </tbody>
         </table>
       </div>
+      <MapaCorrida corridaId={corridaId} />
     </div>
   );
 };
